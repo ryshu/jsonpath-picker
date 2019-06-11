@@ -1,5 +1,5 @@
 {
-  "name": "jsonpath-picker",
+  "name": "jsonpath-picker-vanilla",
   "version": "1.0.0",
   "description": "JS native script for displaying JSON data with path picker feature",
   "author": "Oscar Marie--Taillefer",
