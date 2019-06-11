@@ -1,0 +1,25 @@
+function script() {
+  const $pathTarget = document.querySelectorAll('.path');
+
+  const defaultOpts = {
+    pathNotation: 'dots',
+    pathQuotesType: 'single',
+  };
+
+  function transformJson() {
+    let jsonData = null;
+    try {
+      jsonData = document.querySelector('#json-input').value;
+      jsonData = JSON.parse(jsonData);
+    } catch (error) {
+      alert(`Cannot eval JSON: ${error}`);
+      return;
+    }
+
+    jsonPathPicker('#json-renderer', jsonData, $pathTarget, defaultOpts);
+  }
+
+  document.querySelector('#btn-json-path-picker').addEventListener('click', transformJson);
+}
+
+script();

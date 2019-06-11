@@ -1,0 +1,155 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: opacity 0.2s;
+}
+
+h1 {
+  font-size: 1.5em;
+  margin: 0.83em 0;
+}
+
+h2 {
+  font-size: 1.17em;
+  margin: 1em 0;
+}
+
+pre {
+  margin: 0;
+}
+
+.json-input {
+  border: none;
+  resize: none;
+  border-bottom: 1px solid lightgray;
+  padding: 10px 30px;
+  width: 100%;
+  height: 200px;
+}
+
+.loading {
+  opacity: 0;
+}
+
+.sidebar {
+  background-color: whitesmoke;
+  width: 270px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 40px;
+  box-shadow: 0 0 5px gray;
+  padding: 0 30px 20px 30px;
+  overflow: auto;
+}
+
+.sidebar .label {
+  display: block;
+}
+
+.content {
+  margin: 0 0 40px 270px;
+}
+
+.generate-button {
+  border: none;
+  color: white;
+  background-color: #65265b;
+  border-radius: 2px;
+  font-size: 16px;
+  height: 30px;
+  width: 100%;
+}
+
+.json-tree {
+  padding: 10px 30px;
+}
+
+.path-container {
+  z-index: 1;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 40px;
+  box-shadow: 0 0 5px gray;
+}
+
+.path {
+  height: 100%;
+  width: 100%;
+  padding: 0 20px;
+  border: none;
+  font-family: monospace;
+}
+
+.process-key-formula input {
+  width: 30px;
+}
+
+.jump-to-top {
+  position: fixed;
+  cursor: pointer;
+  color: #65265b;
+  font-size: 40px;
+  transition: transform 0.2s, opacity 0.2s;
+  width: 50px;
+  text-align: center;
+  right: 5px;
+  bottom: 55px;
+  transform: rotate(45deg);
+  opacity: 0;
+}
+
+.jump-to-top.visible {
+  opacity: 1;
+}
+
+.jump-to-top:hover {
+  transform: rotate(45deg) translateY(-5px) translateX(-5px);
+}
+
+@keyframes octocat-wave {
+  0%, 100% {
+    transform: rotate(0);
+  }
+  20%, 60% {
+    transform: rotate(-25deg);
+  }
+  40%, 80% {
+    transform: rotate(10deg);
+  }
+}
+
+.github-corner .octo-box {
+  fill: #65265b;
+  color: #fff;
+  position: fixed;
+  top: 0;
+  border: 0;
+  right: 0;
+}
+
+.github-corner .octo-arm {
+  transform-origin: 130px 106px;
+}
+
+.github-corner:hover .octo-arm {
+  animation: octocat-wave 560ms ease-in-out;
+}
+
+@media (max-width: 500px) {
+  .github-corner:hover .octo-arm {
+    animation: none;
+  }
+
+  .github-corner .octo-arm {
+    animation: octocat-wave 560ms ease-in-out;
+  }
+}
