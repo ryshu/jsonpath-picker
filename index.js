@@ -288,7 +288,7 @@ function ToggleEventListener(event) {
 
 function SimulateClickHandler(elm, event) {
   siblings(elm, 'a.json-toggle', function (el) {
-    return fireClick(el, 'click');
+    return fireClick(el);
   });
   event.stopPropagation();
   event.preventDefault();
@@ -422,7 +422,7 @@ function jsonPathPicker(source, json, target, opt) {
     var elms = document.querySelectorAll('a.json-toggle');
 
     for (var i = 0; i < elms.length; i += 1) {
-      fireClick(elms[i], 'click');
+      fireClick(elms[i]);
     }
   }
 }

@@ -73,7 +73,7 @@ function json2html(json, options) {
           } else {
             html += keyRepr;
           }
-          html += '<span class="pick-path" title="Pick path">&' + options.pickerIcon +';</span>';
+          html += '<span class="pick-path" title="Pick path">&' + options.pickerIcon + ';</span>';
           html += `: ${json2html(json[key], options)}`;
           // Add comma if item is not last
           keyCount -= 1;
@@ -249,7 +249,7 @@ function ToggleEventListener(event) {
 
 // Simulate click on toggle button when placeholder is clicked
 function SimulateClickHandler(elm, event) {
-  siblings(elm, 'a.json-toggle', el => fireClick(el, 'click'));
+  siblings(elm, 'a.json-toggle', el => fireClick(el));
 
   event.stopPropagation();
   event.preventDefault();
@@ -384,7 +384,7 @@ function jsonPathPicker(source, json, target, opt) {
     // Trigger click to collapse all nodes
     const elms = document.querySelectorAll('a.json-toggle');
     for (let i = 0; i < elms.length; i += 1) {
-      fireClick(elms[i], 'click');
+      fireClick(elms[i]);
     }
   }
 }
