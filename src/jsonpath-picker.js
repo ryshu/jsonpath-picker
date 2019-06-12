@@ -197,7 +197,7 @@ function isHidden(elem) {
 function getParents(elem, sel) {
   const result = [];
   for (let p = elem && elem.parentElement; p; p = p.parentElement) {
-    if (!sel && p.matches(sel)) {
+    if (sel && p.matches(sel)) {
       result.push(p);
     }
   }
