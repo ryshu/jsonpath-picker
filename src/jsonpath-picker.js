@@ -11,7 +11,7 @@ function isCollapsable(arg) {
  * @return boolean
  */
 function isUrl(string) {
-  const regexp = /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/;
+  const regexp = /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#:.?+=&%@!\-/]))?/;
   return regexp.test(string);
 }
 
@@ -197,7 +197,7 @@ function isHidden(elem) {
 function getParents(elem, sel) {
   const result = [];
   for (let p = elem && elem.parentElement; p; p = p.parentElement) {
-    if (!sel || p.matches(sel)) {
+    if (!sel && p.matches(sel)) {
       result.push(p);
     }
   }
