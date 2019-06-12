@@ -388,7 +388,7 @@ var options = {};
 function jsonPathPicker(source, json, target, opt) {
   options = opt || {};
 
-  if (!source instanceof Element) {
+  if (!(source instanceof Element)) {
     return 1;
   }
 
@@ -433,7 +433,7 @@ function jsonPathPicker(source, json, target, opt) {
 
 
 function clearJsonPathPicker(source) {
-  if (!source instanceof Element) {
+  if (!(source instanceof Element)) {
     return 1;
   } //Remove event listener
 
