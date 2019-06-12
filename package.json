@@ -11,11 +11,13 @@
   "scripts": {
     "min:js": "uglifyjs --compress --mangle -o lib/jsonpath-picker.min.js -- lib/jsonpath-picker.js",
     "min:css": "uglifycss --output lib/jsonpath-picker.min.css lib/jsonpath-picker.css",
-    "min": "npm run min:js && npm run min:css",
+    "min": "npm run min:js && npm run min:css && npm run post:min",
+    "post:min": "cp lib/*.min.* public",
     "build:babel": "babel src -d build",
     "build:browser": "browserify build/jsonpath-picker.browser.js -o lib/jsonpath-picker.js",
     "build:node": "cp build/jsonpath-picker.js index.js",
-    "build": "npm run build:babel && npm run build:browser && npm run build:node"
+    "build": "npm run build:babel && npm run build:browser && npm run build:node",
+    "deploy": "npm run build && npm run min"
   },
   "keywords": [
     "json",
