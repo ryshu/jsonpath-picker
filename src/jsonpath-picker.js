@@ -204,6 +204,140 @@ function getParents(elem, sel) {
   return result;
 }
 
+function HandlerEventToggle(elm, event) {
+  // Change class
+  elm.classList.toggle('collapsed');
+
+  // Fetch every json-dict and json-array to toggle them
+  const subTarget = siblings(elm, 'ul.json-dict, ol.json-array', (el) => {
+    el.style.display = (el.style.display === '' || el.style.display === 'block') ? 'none' : 'block';
+  });
+
+  // ForEach subtarget, previous siblings return array so we parse it
+  for (let i = 0; i < subTarget.length; i += 1) {
+    if (!isHidden(subTarget[i])) {
+      // Parse every siblings with '.json-placehoder' and remove them (previous add by else)
+      siblings(subTarget[i], '.json-placeholder', el => el.parentNode.removeChild(el));
+    } else {
+      // count item in object / array
+      const childs = subTarget[i].children; let count = 0;
+      for (let j = 0; j < childs.length; j += 1) {
+        if (childs[j].tagName === 'LI') { count += 1; }
+      }
+      const placeholder = count + (count > 1 ? ' items' : ' item');
+
+      // Append a placeholder
+      subTarget[i].insertAdjacentHTML('afterend', `<a href class="json-placeholder">${placeholder}</a>`);
+    }
+  }
+
+  // Prevent propagation
+  event.stopPropagation();
+  event.preventDefault();
+}
+function ToggleEventListener(event) {
+  let t = event.target;
+  while (t && t !== this) {
+    if (t.matches('a.json-toggle')) {
+      HandlerEventToggle.call(null, t, event);
+      event.stopPropagation();
+      event.preventDefault();
+    }
+    t = t.parentNode;
+  }
+};
+
+// Simulate click on toggle button when placeholder is clicked
+function SimulateClickHandler(elm, event) {
+  siblings(elm, 'a.json-toggle', el => fireClick(el, 'click'));
+
+  event.stopPropagation();
+  event.preventDefault();
+}
+function SimulateClickEventListener(event) {
+  let t = event.target;
+  while (t && t !== this) {
+    if (t.matches('a.json-placeholder')) {
+      SimulateClickHandler.call(null, t, event);
+    }
+    t = t.parentNode;
+  }
+}
+
+function PickPathHandler(elm) {
+  if (targetList.length === 0) {
+    return;
+  }
+
+  const $parentsList = getParents(elm, 'li').reverse();
+  let pathSegments = [];
+  for (let i = 0; i < $parentsList.length; i += 1) {
+    let { key } = $parentsList[i].dataset;
+    const { keyType } = $parentsList[i].dataset;
+
+    if (
+      keyType === 'object'
+      && typeof key !== 'number'
+      && options.processKeys
+      && options.keyReplaceRegexPattern !== undefined
+    ) {
+      const keyReplaceRegex = new RegExp(
+        options.keyReplaceRegexPattern,
+        options.keyReplaceRegexFlags,
+      );
+      const keyReplacementText = options.keyReplacementText === undefined ? '' : options.keyReplacementText;
+      key = key.replace(keyReplaceRegex, keyReplacementText);
+    }
+
+    pathSegments.push({
+      key,
+      keyType,
+    });
+  }
+
+  const quotes = {
+    none: '',
+    single: '\'',
+    double: '"',
+  };
+
+  const quote = quotes[options.pathQuotesType];
+
+  pathSegments = pathSegments.map((segment, idx) => {
+    const isBracketsNotation = options.pathNotation === 'brackets';
+    const isKeyForbiddenInDotNotation = !/^\w+$/.test(segment.key) || typeof segment.key === 'number';
+
+    if (segment.keyType === 'array' || segment.isKeyANumber) {
+      return `[${segment.key}]`;
+    } if (isBracketsNotation || isKeyForbiddenInDotNotation) {
+      return `[${quote}${segment.key}${quote}]`;
+    } if (idx > 0) {
+      return `.${segment.key}`;
+    }
+    return segment.key;
+  });
+
+  const path = pathSegments.join('');
+
+  for (let i = 0; i < targetList.length; i += 1) {
+    if (targetList[i].value !== undefined) {
+      targetList[i].value = path;
+    }
+  }
+}
+function PickEventListener(event) {
+  let t = event.target;
+  while (t && t !== this) {
+    if (t.matches('.pick-path')) {
+      PickPathHandler.call(null, t, event);
+    }
+    t = t.parentNode;
+  }
+}
+
+let targetList = [];
+let options = {};
+
 /**
  * Plugin method
  * @param source: Element
@@ -212,13 +346,12 @@ function getParents(elem, sel) {
  * @param opt: an optional options hash
  */
 function jsonPathPicker(source, json, target, opt) {
-  const options = opt || {};
+  options = opt || {};
 
   if (!source instanceof Element) {
     return 1;
   }
 
-  let targetList = [];
   if (target) {
     if (target.length) {
       targetList = target;
@@ -243,136 +376,9 @@ function jsonPathPicker(source, json, target, opt) {
 
   // Bind click on toggle buttons
   off('click', source);
-  function HandlerEventToggle(elm, event) {
-    // Change class
-    elm.classList.toggle('collapsed');
-
-    // Fetch every json-dict and json-array to toggle them
-    const subTarget = siblings(elm, 'ul.json-dict, ol.json-array', (el) => {
-      el.style.display = (el.style.display === '' || el.style.display === 'block') ? 'none' : 'block';
-    });
-
-    // ForEach subtarget, previous siblings return array so we parse it
-    for (let i = 0; i < subTarget.length; i += 1) {
-      if (!isHidden(subTarget[i])) {
-        // Parse every siblings with '.json-placehoder' and remove them (previous add by else)
-        siblings(subTarget[i], '.json-placeholder', el => el.parentNode.removeChild(el));
-      } else {
-        // count item in object / array
-        const childs = subTarget[i].children; let count = 0;
-        for (let j = 0; j < childs.length; j += 1) {
-          if (childs[j].tagName === 'LI') { count += 1; }
-        }
-        const placeholder = count + (count > 1 ? ' items' : ' item');
-
-        // Append a placeholder
-        subTarget[i].insertAdjacentHTML('afterend', `<a href class="json-placeholder">${placeholder}</a>`);
-      }
-    }
-
-    // Prevent propagation
-    event.stopPropagation();
-    event.preventDefault();
-  }
-  source.addEventListener('click', function ToggleEventListener(event) {
-    let t = event.target;
-    while (t && t !== this) {
-      if (t.matches('a.json-toggle')) {
-        HandlerEventToggle.call(null, t, event);
-        event.stopPropagation();
-        event.preventDefault();
-      }
-      t = t.parentNode;
-    }
-  });
-
-  // Simulate click on toggle button when placeholder is clicked
-  function SimulateClickHandler(elm, event) {
-    siblings(elm, 'a.json-toggle', el => fireClick(el, 'click'));
-
-    event.stopPropagation();
-    event.preventDefault();
-  }
-  source.addEventListener('click', function SimulateClickEventListener(event) {
-    let t = event.target;
-    while (t && t !== this) {
-      if (t.matches('a.json-placeholder')) {
-        SimulateClickHandler.call(null, t, event);
-      }
-      t = t.parentNode;
-    }
-  });
-
-  function PickPathHandler(elm) {
-    if (targetList.length === 0) {
-      return;
-    }
-
-    const $parentsList = getParents(elm, 'li').reverse();
-    let pathSegments = [];
-    for (let i = 0; i < $parentsList.length; i += 1) {
-      let { key } = $parentsList[i].dataset;
-      const { keyType } = $parentsList[i].dataset;
-
-      if (
-        keyType === 'object'
-        && typeof key !== 'number'
-        && options.processKeys
-        && options.keyReplaceRegexPattern !== undefined
-      ) {
-        const keyReplaceRegex = new RegExp(
-          options.keyReplaceRegexPattern,
-          options.keyReplaceRegexFlags,
-        );
-        const keyReplacementText = options.keyReplacementText === undefined ? '' : options.keyReplacementText;
-        key = key.replace(keyReplaceRegex, keyReplacementText);
-      }
-
-      pathSegments.push({
-        key,
-        keyType,
-      });
-    }
-
-    const quotes = {
-      none: '',
-      single: '\'',
-      double: '"',
-    };
-
-    const quote = quotes[options.pathQuotesType];
-
-    pathSegments = pathSegments.map((segment, idx) => {
-      const isBracketsNotation = options.pathNotation === 'brackets';
-      const isKeyForbiddenInDotNotation = !/^\w+$/.test(segment.key) || typeof segment.key === 'number';
-
-      if (segment.keyType === 'array' || segment.isKeyANumber) {
-        return `[${segment.key}]`;
-      } if (isBracketsNotation || isKeyForbiddenInDotNotation) {
-        return `[${quote}${segment.key}${quote}]`;
-      } if (idx > 0) {
-        return `.${segment.key}`;
-      }
-      return segment.key;
-    });
-
-    const path = pathSegments.join('');
-
-    for (let i = 0; i < targetList.length; i += 1) {
-      if (targetList[i].value !== undefined) {
-        targetList[i].value = path;
-      }
-    }
-  }
-  source.addEventListener('click', function PickEventListener(event) {
-    let t = event.target;
-    while (t && t !== this) {
-      if (t.matches('.pick-path')) {
-        PickPathHandler.call(null, t, event);
-      }
-      t = t.parentNode;
-    }
-  });
+  source.addEventListener('click', ToggleEventListener);
+  source.addEventListener('click', SimulateClickEventListener);
+  source.addEventListener('click', PickEventListener);
 
   if (options.outputCollapsed === true) {
     // Trigger click to collapse all nodes
@@ -388,7 +394,14 @@ function jsonPathPicker(source, json, target, opt) {
  * @param source: Element
  */
 function clearJsonPathPicker(source) {
-  source.removeEventListener('click');
+  if (!source instanceof Element) {
+    return 1;
+  }
+
+  //Remove event listener
+  source.removeEventListener('click', PickEventListener);
+  source.removeEventListener('click', ToggleEventListener);
+  source.removeEventListener('click', SimulateClickEventListener);
 }
 
 module.exports = {

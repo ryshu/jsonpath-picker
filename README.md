@@ -1,3 +1,5 @@
+[![npm version](https://badge.fury.io/js/jsonpath-picker-vanilla.svg)](https://badge.fury.io/js/jsonpath-picker-vanilla)
+
 # [JSON path picker](https://ryshu.github.io/jsonpath-picker/)
 
 Note: all this repository is a refactoring in Vanilla JS of [piotros](https://github.com/piotros/json-path-picker) JQuery plugin.
