@@ -329,7 +329,7 @@ function PickEventListener(event) {
   let t = event.target;
   while (t && t !== this) {
     if (t.matches('.pick-path')) {
-      PickPathHandler.call(null, t, event);
+      PickPathHandler.call(null, t);
     }
     t = t.parentNode;
   }
