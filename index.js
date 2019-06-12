@@ -16,7 +16,7 @@ function isCollapsable(arg) {
 
 
 function isUrl(string) {
-  var regexp = /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/;
+  var regexp = /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#:.?+=&%@!\-/]))?/;
   return regexp.test(string);
 }
 /**
@@ -226,7 +226,7 @@ function getParents(elem, sel) {
   var result = [];
 
   for (var p = elem && elem.parentElement; p; p = p.parentElement) {
-    if (!sel || p.matches(sel)) {
+    if (sel && p.matches(sel)) {
       result.push(p);
     }
   }
@@ -288,7 +288,7 @@ function ToggleEventListener(event) {
 
 function SimulateClickHandler(elm, event) {
   siblings(elm, 'a.json-toggle', function (el) {
-    return fireClick(el, 'click');
+    return fireClick(el);
   });
   event.stopPropagation();
   event.preventDefault();
@@ -368,7 +368,7 @@ function PickEventListener(event) {
 
   while (t && t !== this) {
     if (t.matches('.pick-path')) {
-      PickPathHandler.call(null, t, event);
+      PickPathHandler.call(null, t);
     }
 
     t = t.parentNode;
@@ -388,7 +388,7 @@ var options = {};
 function jsonPathPicker(source, json, target, opt) {
   options = opt || {};
 
-  if (!source instanceof Element) {
+  if (!(source instanceof Element)) {
     return 1;
   }
 
@@ -422,7 +422,7 @@ function jsonPathPicker(source, json, target, opt) {
     var elms = document.querySelectorAll('a.json-toggle');
 
     for (var i = 0; i < elms.length; i += 1) {
-      fireClick(elms[i], 'click');
+      fireClick(elms[i]);
     }
   }
 }
@@ -433,7 +433,7 @@ function jsonPathPicker(source, json, target, opt) {
 
 
 function clearJsonPathPicker(source) {
-  if (!source instanceof Element) {
+  if (!(source instanceof Element)) {
     return 1;
   } //Remove event listener
 

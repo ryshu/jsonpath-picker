@@ -11,7 +11,7 @@ function isCollapsable(arg) {
  * @return boolean
  */
 function isUrl(string) {
-  const regexp = /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/;
+  const regexp = /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#:.?+=&%@!\-/]))?/;
   return regexp.test(string);
 }
 
@@ -73,7 +73,7 @@ function json2html(json, options) {
           } else {
             html += keyRepr;
           }
-          html += '<span class="pick-path" title="Pick path">&' + options.pickerIcon +';</span>';
+          html += '<span class="pick-path" title="Pick path">&' + options.pickerIcon + ';</span>';
           html += `: ${json2html(json[key], options)}`;
           // Add comma if item is not last
           keyCount -= 1;
@@ -197,7 +197,7 @@ function isHidden(elem) {
 function getParents(elem, sel) {
   const result = [];
   for (let p = elem && elem.parentElement; p; p = p.parentElement) {
-    if (!sel || p.matches(sel)) {
+    if (sel && p.matches(sel)) {
       result.push(p);
     }
   }
@@ -249,7 +249,7 @@ function ToggleEventListener(event) {
 
 // Simulate click on toggle button when placeholder is clicked
 function SimulateClickHandler(elm, event) {
-  siblings(elm, 'a.json-toggle', el => fireClick(el, 'click'));
+  siblings(elm, 'a.json-toggle', el => fireClick(el));
 
   event.stopPropagation();
   event.preventDefault();
@@ -329,7 +329,7 @@ function PickEventListener(event) {
   let t = event.target;
   while (t && t !== this) {
     if (t.matches('.pick-path')) {
-      PickPathHandler.call(null, t, event);
+      PickPathHandler.call(null, t);
     }
     t = t.parentNode;
   }
@@ -348,7 +348,7 @@ let options = {};
 function jsonPathPicker(source, json, target, opt) {
   options = opt || {};
 
-  if (!source instanceof Element) {
+  if (!(source instanceof Element)) {
     return 1;
   }
 
@@ -384,7 +384,7 @@ function jsonPathPicker(source, json, target, opt) {
     // Trigger click to collapse all nodes
     const elms = document.querySelectorAll('a.json-toggle');
     for (let i = 0; i < elms.length; i += 1) {
-      fireClick(elms[i], 'click');
+      fireClick(elms[i]);
     }
   }
 }
@@ -394,7 +394,7 @@ function jsonPathPicker(source, json, target, opt) {
  * @param source: Element
  */
 function clearJsonPathPicker(source) {
-  if (!source instanceof Element) {
+  if (!(source instanceof Element)) {
     return 1;
   }
 
