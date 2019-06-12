@@ -1,5 +1,6 @@
 function script() {
   const $pathTarget = document.querySelectorAll('.path');
+  const $source = document.querySelector('#json-renderer');
 
   const defaultOpts = {
     pathNotation: 'dots',
@@ -16,7 +17,7 @@ function script() {
       return;
     }
 
-    jsonPathPicker('#json-renderer', jsonData, $pathTarget, defaultOpts);
+    JPPicker.render($source, jsonData, $pathTarget, defaultOpts);
   }
 
   document.querySelector('#btn-json-path-picker').addEventListener('click', transformJson);

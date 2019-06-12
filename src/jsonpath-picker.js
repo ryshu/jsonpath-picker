@@ -205,26 +205,43 @@ function getParents(elem, sel) {
 }
 
 /**
- * jQuery plugin method
- * @param source path to element where to put render
+ * Plugin method
+ * @param source: Element
  * @param json: a javascript object
- * @param target: array of javascript object
+ * @param target: NodeListOf<Element> | Element | { value: String }[] | { value: String }
  * @param opt: an optional options hash
  */
 function jsonPathPicker(source, json, target, opt) {
   const options = opt || {};
+
+  if (!source instanceof Element) {
+    return 1;
+  }
+
+  let targetList = [];
+  if (target) {
+    if (target.length) {
+      targetList = target;
+    } else if (target.value) {
+      targetList = [target];
+    } else {
+      return 3;
+    }
+  } else {
+    return 3;
+  }
+
   options.pathQuotesType = options.pathQuotesType !== undefined ? options.pathQuotesType : 'single';
-  const $source = document.querySelector(source);
 
   // Transform to HTML
   let html = json2html(json, options);
   if (isCollapsable(json)) html = `<a href class="json-toggle"></a>${html}`;
 
   // Insert HTML in target DOM element
-  $source.innerHTML = html;
+  source.innerHTML = html;
 
   // Bind click on toggle buttons
-  off('click', $source);
+  off('click', source);
   function HandlerEventToggle(elm, event) {
     // Change class
     elm.classList.toggle('collapsed');
@@ -256,7 +273,7 @@ function jsonPathPicker(source, json, target, opt) {
     event.stopPropagation();
     event.preventDefault();
   }
-  $source.addEventListener('click', function ToggleEventListener(event) {
+  source.addEventListener('click', function ToggleEventListener(event) {
     let t = event.target;
     while (t && t !== this) {
       if (t.matches('a.json-toggle')) {
@@ -275,7 +292,7 @@ function jsonPathPicker(source, json, target, opt) {
     event.stopPropagation();
     event.preventDefault();
   }
-  $source.addEventListener('click', function SimulateClickEventListener(event) {
+  source.addEventListener('click', function SimulateClickEventListener(event) {
     let t = event.target;
     while (t && t !== this) {
       if (t.matches('a.json-placeholder')) {
@@ -286,7 +303,7 @@ function jsonPathPicker(source, json, target, opt) {
   });
 
   function PickPathHandler(elm) {
-    if (target.length === 0) {
+    if (targetList.length === 0) {
       return;
     }
 
@@ -340,11 +357,13 @@ function jsonPathPicker(source, json, target, opt) {
 
     const path = pathSegments.join('');
 
-    for (let i = 0; i < target.length; i += 1) {
-      target[i].value = path;
+    for (let i = 0; i < targetList.length; i += 1) {
+      if (targetList[i].value !== undefined) {
+        targetList[i].value = path;
+      }
     }
   }
-  $source.addEventListener('click', function PickEventListener(event) {
+  source.addEventListener('click', function PickEventListener(event) {
     let t = event.target;
     while (t && t !== this) {
       if (t.matches('.pick-path')) {
@@ -361,4 +380,17 @@ function jsonPathPicker(source, json, target, opt) {
       fireClick(elms[i], 'click');
     }
   }
+}
+
+/**
+ * Plugin clear method
+ * @param source: Element
+ */
+function clearJsonPathPicker(source) {
+  source.removeEventListener('click');
+}
+
+module.exports = {
+  jsonPathPicker,
+  clearJsonPathPicker
 }
