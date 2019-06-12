@@ -21,7 +21,7 @@ JSON path picker can be also used in your app. Core features are packed as jQuer
 
 ## Plugin Installation
 
-Import `json-path-picker.min.js` and `json-path-picker.min.css` in your application.
+Import `jsonpath-picker.min.js` and `jsonpath-picker.min.css` in your application.
 
 ## Plugin Usage
 
@@ -34,22 +34,30 @@ Import `json-path-picker.min.js` and `json-path-picker.min.css` in your applicat
 2. Create path target element:
 
   ```html
-  <input id="path" type="text">
+  <input class="path" type="text">
   ```
 
-3. Call the `jsonPathPicker()` method and pass your JSON data and path target element selector as an arguments:
+3. Call the `render()` method and pass your JSON data and path target element selector as an arguments:
 
   ```js
   var data = {
     "foobar": "foobaz"
   };
 
-  jsonPathPicker('#json-renderer', data, '#path');
+  source = document.querySelector('#json-renderer');
+  dest = document.querySelectorAll('.path');
+
+  // Browser
+  JPPicker.render(source, data, dests);
+
+  // Using Node require
+  const JPP = require('jsonpath-picker-vanilla');
+  JPPicker.render(source, data, dests);
   ```
 
 ## Plugin Options
 
-The `jsonPathPicker` method accepts an optional `options` object as a third argument.
+The `render` method accepts an optional `options` object as a 4th argument.
 
 | Option                     | Type      | Default         | Description                                              |
 |----------------------------|-----------|-----------------|----------------------------------------------------------|
@@ -65,7 +73,20 @@ The `jsonPathPicker` method accepts an optional `options` object as a third argu
 Example:
 
 ```js
-jsonPathPicker('#json-renderer', data, '#path', {
+
+source = document.querySelector('#json-renderer');
+dest = document.querySelectorAll('.path');
+
+// For Browser
+JPPicker.render(source, data, dest, {
+    outputWithQuotes: true,
+    pathNotation: 'brackets',
+    pathQuotesType: 'double'
+});
+
+// Using Node require
+const JPP = require('jsonpath-picker-vanilla');
+JPP.jsonPathPicker(source, data, dest, {
     outputWithQuotes: true,
     pathNotation: 'brackets',
     pathQuotesType: 'double'

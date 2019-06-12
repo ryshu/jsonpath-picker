@@ -8,4 +8,4 @@ node_modules
 # only keep lib for package
 src
 public
-index.html
+build

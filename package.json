@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "JS native script for displaying JSON data with path picker feature",
   "author": "Oscar Marie--Taillefer",
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/ryshu/jsonpath-picker.git"
@@ -11,7 +12,10 @@
     "min:js": "uglifyjs --compress --mangle -o lib/jsonpath-picker.min.js -- lib/jsonpath-picker.js",
     "min:css": "uglifycss --output lib/jsonpath-picker.min.css lib/jsonpath-picker.css",
     "min": "npm run min:js && npm run min:css",
-    "build": "babel src -d lib"
+    "build:babel": "babel src -d build",
+    "build:browser": "browserify build/jsonpath-picker.browser.js -o lib/jsonpath-picker.js",
+    "build:node": "cp build/jsonpath-picker.js index.js",
+    "build": "npm run build:babel && npm run build:browser && npm run build:node"
   },
   "keywords": [
     "json",
@@ -28,6 +32,7 @@
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
+    "browserify": "^16.2.3",
     "uglify-js": "^3.6.0",
     "uglifycss": "0.0.29"
   }
