@@ -73,7 +73,7 @@ function json2html(json, options) {
           } else {
             html += keyRepr;
           }
-          html += '<span class="pick-path" title="Pick path">&#x1f4cb;</span>';
+          html += '<span class="pick-path" title="Pick path">&' + options.pickerIcon +';</span>';
           html += `: ${json2html(json[key], options)}`;
           // Add comma if item is not last
           keyCount -= 1;
@@ -234,6 +234,7 @@ function jsonPathPicker(source, json, target, opt) {
   options.pathQuotesType = options.pathQuotesType !== undefined ? options.pathQuotesType : 'single';
 
   // Transform to HTML
+  options.pickerIcon = options.pickerIcon || '#x1f4cb';
   let html = json2html(json, options);
   if (isCollapsable(json)) html = `<a href class="json-toggle"></a>${html}`;
 

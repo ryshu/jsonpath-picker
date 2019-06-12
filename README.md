@@ -69,6 +69,7 @@ The `render` method accepts an optional `options` object as a 4th argument.
 | keyReplaceRegexPattern     | string    | `undefined`     |  |
 | keyReplaceRegexFlags       | string    | `undefined`     |  |
 | keyReplacementText         | string    | `''`            |  |
+| pickerIcon | string | `#x1f4cb` | Hexa Unicode for picker Icon |
 
 Example:
 

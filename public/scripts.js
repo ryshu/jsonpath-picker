@@ -5,6 +5,7 @@ function script() {
   const defaultOpts = {
     pathNotation: 'dots',
     pathQuotesType: 'single',
+    pickerIcon: '#x7f7',
   };
 
   function transformJson() {
