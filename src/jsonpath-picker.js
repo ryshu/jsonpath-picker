@@ -128,7 +128,7 @@ function siblings(el, sel, callback) {
   const sibs = [];
   for (let i = 0; i < el.parentNode.children.length; i += 1) {
     const child = el.parentNode.children[i];
-    if (child !== el && (!sel || child.matches(sel))) {
+    if (child !== el && typeof sel === 'string' && child.matches(sel)) {
       sibs.push(child);
     }
   }
@@ -197,7 +197,7 @@ function isHidden(elem) {
 function getParents(elem, sel) {
   const result = [];
   for (let p = elem && elem.parentElement; p; p = p.parentElement) {
-    if (sel && p.matches(sel)) {
+    if ( typeof sel === 'string' && child.matches(sel)) {
       result.push(p);
     }
   }
