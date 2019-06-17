@@ -197,7 +197,7 @@ function isHidden(elem) {
 function getParents(elem, sel) {
   const result = [];
   for (let p = elem && elem.parentElement; p; p = p.parentElement) {
-    if ( typeof sel === 'string' && child.matches(sel)) {
+    if ( typeof sel === 'string' && p.matches(sel)) {
       result.push(p);
     }
   }
@@ -378,7 +378,14 @@ function jsonPathPicker(source, json, target, opt) {
   off('click', source);
   source.addEventListener('click', ToggleEventListener);
   source.addEventListener('click', SimulateClickEventListener);
-  source.addEventListener('click', PickEventListener);
+
+  // Bind picker only if user didn't diseable it
+  if (!options.WithoutPicker) {
+    source.addEventListener('click', PickEventListener);
+  } else {
+    // Remove every picker icon
+    document.querySelectorAll('.pick-path').forEach(el => el.parentNode.removeChild(el));
+  }
 
   if (options.outputCollapsed === true) {
     // Trigger click to collapse all nodes
