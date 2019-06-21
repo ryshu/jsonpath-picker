@@ -399,7 +399,7 @@ function jsonPathPicker(source, json, target, opt) {
   } else {
     // Remove every picker icon
     const sourceSelector = source.getAttribute('data-jsonpath-uniq-id'); // Prevent affect other jp-picker
-    document.querySelectorAll(`#${sourceSelector} .pick-path`).forEach(el => el.parentNode.removeChild(el));
+    document.querySelectorAll(`[id*='${sourceSelector}'] .pick-path`).forEach(el => el.parentNode.removeChild(el));
   }
 
   if (options.outputCollapsed === true) {
