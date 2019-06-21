@@ -335,9 +335,16 @@ function PickEventListener(event) {
   }
 }
 
+// Uniq id generator
+function uuidv4() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
 let targetList = [];
 let options = {};
-
 /**
  * Plugin method
  * @param source: Element
@@ -364,6 +371,11 @@ function jsonPathPicker(source, json, target, opt) {
     return 3;
   }
 
+  // Add to source unique identifier
+  const uuid = uuidv4();
+  source.id = source.id ? `${source.id} ${uuid}` : uuid;
+  source.setAttribute('data-jsonpath-uniq-id', uuid);
+
   options.pathQuotesType = options.pathQuotesType !== undefined ? options.pathQuotesType : 'single';
 
   // Transform to HTML
@@ -384,7 +396,8 @@ function jsonPathPicker(source, json, target, opt) {
     source.addEventListener('click', PickEventListener);
   } else {
     // Remove every picker icon
-    document.querySelectorAll('.pick-path').forEach(el => el.parentNode.removeChild(el));
+    const sourceSelector = source.getAttribute('data-jsonpath-uniq-id'); // Prevent affect other jp-picker
+    document.querySelectorAll(`#${sourceSelector} .pick-path`).forEach(el => el.parentNode.removeChild(el));
   }
 
   if (options.outputCollapsed === true) {

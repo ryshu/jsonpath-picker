@@ -373,6 +373,15 @@ function PickEventListener(event) {
 
     t = t.parentNode;
   }
+} // Uniq id generator
+
+
+function uuidv4() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    var r = Math.random() * 16 | 0,
+        v = c == 'x' ? r : r & 0x3 | 0x8;
+    return v.toString(16);
+  });
 }
 
 var targetList = [];
@@ -402,8 +411,12 @@ function jsonPathPicker(source, json, target, opt) {
     }
   } else {
     return 3;
-  }
+  } // Add to source unique identifier
 
+
+  var uuid = uuidv4();
+  source.id = source.id ? "".concat(source.id, " ").concat(uuid) : uuid;
+  source.setAttribute('data-jsonpath-uniq-id', uuid);
   options.pathQuotesType = options.pathQuotesType !== undefined ? options.pathQuotesType : 'single'; // Transform to HTML
 
   options.pickerIcon = options.pickerIcon || '#x1f4cb';
@@ -420,7 +433,9 @@ function jsonPathPicker(source, json, target, opt) {
     source.addEventListener('click', PickEventListener);
   } else {
     // Remove every picker icon
-    document.querySelectorAll('.pick-path').forEach(function (el) {
+    var sourceSelector = source.getAttribute('data-jsonpath-uniq-id'); // Prevent affect other jp-picker
+
+    document.querySelectorAll("#".concat(sourceSelector, " .pick-path")).forEach(function (el) {
       return el.parentNode.removeChild(el);
     });
   }
