@@ -1,4 +1,4 @@
-[![npm version](https://badge.fury.io/js/jsonpath-picker-vanilla.svg)](https://badge.fury.io/js/jsonpath-picker-vanilla) [![Total alerts](https://img.shields.io/lgtm/alerts/g/ryshu/jsonpath-picker.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ryshu/jsonpath-picker/alerts/) [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/ryshu/jsonpath-picker.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ryshu/jsonpath-picker/context:javascript)
+[![npm version](https://badge.fury.io/js/jsonpath-picker-vanilla.svg)](https://badge.fury.io/js/jsonpath-picker-vanilla) [![Total alerts](https://img.shields.io/lgtm/alerts/g/ryshu/jsonpath-picker.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ryshu/jsonpath-picker/alerts/) [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/ryshu/jsonpath-picker.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ryshu/jsonpath-picker/context:javascript) [![Greenkeeper badge](https://badges.greenkeeper.io/ryshu/jsonpath-picker.svg)](https://greenkeeper.io/)
 
 # [JSON path picker](https://ryshu.github.io/jsonpath-picker/)
 
