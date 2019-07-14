@@ -1,6 +1,6 @@
 {
   "name": "jsonpath-picker-vanilla",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "JS native script for displaying JSON data with path picker feature",
   "author": "Oscar Marie--Taillefer",
   "main": "index.js",
@@ -31,10 +31,10 @@
   },
   "homepage": "https://github.com/ryshu/jsonpath-picker",
   "devDependencies": {
-    "@babel/cli": "^7.4.4",
-    "@babel/core": "^7.4.5",
-    "@babel/preset-env": "^7.4.5",
-    "browserify": "^16.2.3",
+    "@babel/cli": "^7.5.0",
+    "@babel/core": "^7.5.4",
+    "@babel/preset-env": "^7.5.4",
+    "browserify": "^16.3.0",
     "uglify-js": "^3.6.0",
     "uglifycss": "0.0.29"
   }
