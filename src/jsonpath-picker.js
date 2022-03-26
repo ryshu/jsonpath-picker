@@ -23,7 +23,7 @@ function json2html(json, options) {
   let html = '';
   if (typeof json === 'string') {
     // Escape tags
-    const tmp = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const tmp = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     if (isUrl(tmp)) {
       html += `<a href="${tmp}" class="json-string">${tmp}</a>`;
     } else {
