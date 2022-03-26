@@ -2,6 +2,7 @@
 .editorconfig
 .babelrc
 .scannerwork
+.github
 
 # node_modules
 node_modules
