@@ -30,7 +30,7 @@ function json2html(json, options) {
 
   if (typeof json === 'string') {
     // Escape tags
-    var tmp = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    var tmp = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
     if (isUrl(tmp)) {
       html += "<a href=\"".concat(tmp, "\" class=\"json-string\">").concat(tmp, "</a>");
