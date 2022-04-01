@@ -18,6 +18,4 @@ jobs:
       - run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_EMAIL: ${{ secrets.NPM_EMAIL }}
-          NPM_PASSWORD: ${{ secrets.NPM_PASSWORD }}
-          NPM_USERNAME: ${{ secrets.NPM_USERNAME }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
